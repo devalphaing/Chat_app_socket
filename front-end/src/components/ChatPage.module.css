@@ -1,0 +1,73 @@
+.nav-bar{
+    height: 5rem;
+    box-shadow: 0px 6px 0px black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+}
+
+.chat-container{
+    padding: 1rem;
+    border-bottom: 2px solid white;
+    height: 17rem;
+    overflow: auto;
+}
+
+.my-msg{
+    display: flex;
+    justify-content: end;
+    align-items: center; 
+    margin-bottom: 1rem;
+    background-color: brown;
+    color: white;
+    padding: 1rem;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    font-size: 1.5rem;
+    border-radius: 1rem;
+}
+
+.other-msg{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    background-color: aquamarine;
+    padding: 1rem;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    font-size: 1.5rem;  
+    border-radius: 1rem;
+}
+
+.enter-msg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 1rem 0rem 0rem 1rem;
+}
+
+.enter-msg input{
+    padding: 1rem;
+    width: 40%;
+    background-color: aliceblue;
+    border-radius: 1rem;
+    border: 1px solid brown;
+}
+
+.btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn button {
+    background-color: brown;
+    color: white;
+    padding: 1rem 3rem 1rem 3rem;
+    border-radius: 1rem;
+    border: 1px solid brown;
+}
+
+.btn button:hover{
+    cursor: pointer;
+}

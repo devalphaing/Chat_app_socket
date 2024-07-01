@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './ChatPage.module.css';
 
 const ChatPage = () => {
   const [inputValue, setInputValue] = useState('');
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const name = prompt('Enter your name:');
+    if (name) {
+      setUserName(name);
+    }
+  }, []);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
 
   const handleSendClick = () => {
-    console.log(inputValue);
+    console.log(`${userName}: ${inputValue}`);
     setInputValue(''); // Clear the input field after sending
   };
 
@@ -34,6 +42,7 @@ const ChatPage = () => {
           type='text' 
           value={inputValue} 
           onChange={handleInputChange} 
+          placeholder={`Enter message, ${userName}`} 
         />
       </div>
 

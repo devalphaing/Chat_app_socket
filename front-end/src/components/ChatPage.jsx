@@ -39,8 +39,8 @@ const ChatPage = () => {
     setInputValue(""); // Clear the input field after sending
   };
 
-  const handleClose = () => {
-    if(userName){
+  const handleClose = (enteredName = null) => {
+    if(enteredName || userName){
       setAskName(false);
     }
   }
@@ -49,11 +49,9 @@ const ChatPage = () => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const enteredName = formData.get("name");
-    if(enteredName.length !== 0){
-      setUserName(enteredName);
-      userJoined(enteredName);
-      handleClose();
-    }
+    setUserName(enteredName);
+    userJoined(enteredName);
+    handleClose(enteredName);
   };
 
   return (

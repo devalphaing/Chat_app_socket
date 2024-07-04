@@ -1,7 +1,9 @@
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:8000');
+const SOCKET_SERVER_URL = "http://localhost:8000";
 
-const userJoined = ()=> {
-    
+export const socket = io(SOCKET_SERVER_URL);
+
+export const userJoined = (name)=> {
+    socket.emit('new-user-joined', name);
 }

@@ -25,6 +25,7 @@
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
   font-size: 1.5rem;
   border-radius: 1rem;
+  margin: 1rem 0rem;
 }
 
 .other-msg {
@@ -36,6 +37,7 @@
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
   font-size: 1.5rem;
   border-radius: 1rem;
+  margin: 1rem 0rem;
 }
 
 .enter-msg {

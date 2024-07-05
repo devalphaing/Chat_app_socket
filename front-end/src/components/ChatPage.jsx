@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ChatPage.module.css";
-import { io } from "socket.io-client";
-import { socket, userJoined } from "../api/client";
+import { sendMessage, socket, userJoined } from "../api/client";
 
 //mui
 import Button from "@mui/material/Button";
@@ -28,6 +27,15 @@ const ChatPage = () => {
         { type: "user-joined", user: name, message: `${name} has joined!!` },
       ]);
     });
+
+    socket.on("receive", data => {
+      console.log(data, 'recieve');
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { type: "message", user: data.name, message: data.message },
+      ]);
+    })
+
   }, []);
 
   const handleInputChange = (e) => {
@@ -35,7 +43,12 @@ const ChatPage = () => {
   };
 
   const handleSendClick = () => {
-    console.log(`${userName}: ${inputValue}`);
+    // console.log(`${userName}: ${inputValue}`);
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { type: "message", user: userName, message: inputValue },
+    ]);
+    sendMessage(inputValue);
     setInputValue(""); // Clear the input field after sending
   };
 
@@ -102,17 +115,6 @@ const ChatPage = () => {
           </div>
         ))}
 
-        {/* <div className={styles['my-msg']}>
-          Hello!!
-        </div>
-
-        <div className={styles['other-msg']}>
-          How are you?!
-        </div>
-
-        <div className={styles['joined-msg']}>
-          
-        </div> */}
       </div>
 
       <div className={styles["enter-msg"]}>
@@ -132,3 +134,6 @@ const ChatPage = () => {
 };
 
 export default ChatPage;
+
+
+//send and recieve functionality from backend to front end so that when reload or new page opens data did not get cleared

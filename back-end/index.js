@@ -23,12 +23,13 @@ io.on('connection', (socket) => {
   socket.on('new-user-joined', (name) => {
     users[socket.id] = name;
     socket.broadcast.emit('user-joined', name);
-    console.log(name);
+    console.log(users);
   });
 
   // Message sent
   socket.on('send', (message) => {
-    socket.broadcast.emit('recieve', { message, name: users[socket.id] });
+    console.log(`Message came = ${message} from ${users[socket.id]}`);
+    socket.broadcast.emit('receive', { message, name: users[socket.id] });
   });
 });
 

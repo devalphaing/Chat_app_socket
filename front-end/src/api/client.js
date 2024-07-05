@@ -7,3 +7,7 @@ export const socket = io(SOCKET_SERVER_URL);
 export const userJoined = (name)=> {
     socket.emit('new-user-joined', name);
 }
+
+export const sendMessage = (message) => {
+    socket.emit('send', message);   
+}

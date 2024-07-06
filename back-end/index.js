@@ -19,6 +19,7 @@ app.use(cors({
 }));
 
 io.on('connection', (socket) => {
+
   // New user joined
   socket.on('new-user-joined', (name) => {
     users[socket.id] = name;
@@ -28,8 +29,18 @@ io.on('connection', (socket) => {
 
   // Message sent
   socket.on('send', (message) => {
-    console.log(`Message came = ${message} from ${users[socket.id]}`);
-    socket.broadcast.emit('receive', { message, name: users[socket.id] });
+    if (users[socket.id]) {
+      console.log(`Message came = ${message} from ${users[socket.id]}`);
+      socket.broadcast.emit('receive', { message, name: users[socket.id] });
+    }
+  });
+
+  // Handle user disconnect
+  socket.on('disconnect', () => {
+    if (users[socket.id]) {
+      socket.broadcast.emit('user-left', users[socket.id]);
+      delete users[socket.id];
+    }
   });
 });
 

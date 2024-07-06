@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "./ChatPage.module.css";
 import { sendMessage, socket, userJoined } from "../api/client";
 
@@ -18,6 +18,7 @@ const ChatPage = () => {
     { type: "message", user: "bot", message: "Hello from abc!!" },
   ]);
   const [askName, setAskName] = useState(true);
+  const nameInputRef = useRef(null);
 
   useEffect(() => {
     socket.on("user-joined", (name) => {
@@ -28,14 +29,13 @@ const ChatPage = () => {
       ]);
     });
 
-    socket.on("receive", data => {
-      console.log(data, 'recieve');
+    socket.on("receive", (data) => {
+      console.log(data, "recieve");
       setMessages((prevMessages) => [
         ...prevMessages,
         { type: "message", user: data.name, message: data.message },
       ]);
-    })
-
+    });
   }, []);
 
   const handleInputChange = (e) => {
@@ -52,31 +52,26 @@ const ChatPage = () => {
     setInputValue(""); // Clear the input field after sending
   };
 
-  const handleClose = (enteredName = null) => {
-    if(enteredName || userName){
-      setAskName(false);
-    }
-  }
-
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const enteredName = formData.get("name");
-    setUserName(enteredName);
-    userJoined(enteredName);
-    handleClose(enteredName);
+    const enteredName = nameInputRef.current.value.trim();
+    if (enteredName) {
+      setUserName(enteredName);
+      userJoined(enteredName);
+      setAskName(false);
+    }
   };
 
   return (
     <>
       <Dialog
         open={askName}
-        onClose={handleClose}
+        onClose={() => {}}
         PaperProps={{
           component: "form",
           onSubmit: handleFormSubmit,
         }}
-        fullWidth = '50%'
+        fullWidth
       >
         <DialogTitle>User Name</DialogTitle>
         <DialogContent>
@@ -90,6 +85,7 @@ const ChatPage = () => {
             label="Your Name"
             fullWidth
             variant="standard"
+            inputRef={nameInputRef}
           />
         </DialogContent>
         <DialogActions>
@@ -114,7 +110,6 @@ const ChatPage = () => {
             {data.user} = {data.message}
           </div>
         ))}
-
       </div>
 
       <div className={styles["enter-msg"]}>
@@ -134,6 +129,3 @@ const ChatPage = () => {
 };
 
 export default ChatPage;
-
-
-//send and recieve functionality from backend to front end so that when reload or new page opens data did not get cleared

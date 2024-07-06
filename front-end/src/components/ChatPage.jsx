@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./ChatPage.module.css";
-import { sendMessage, socket, userJoined } from "../api/client";
+import { disconnect, sendMessage, socket, userJoined } from "../api/client";
+import ting from '../media/ting.mp3';
 
 //mui
 import Button from "@mui/material/Button";
@@ -18,6 +19,7 @@ const ChatPage = () => {
   const [askName, setAskName] = useState(true);
   const nameInputRef = useRef(null);
   const chatContainerRef = useRef(null);
+  const audioRef = useRef(null);
 
   useEffect(() => {
     const handleUserJoined = (name) => {
@@ -36,13 +38,23 @@ const ChatPage = () => {
       ]);
     };
 
+    const handleUserLeft = (name) => {
+      console.log("member left", name);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { type: "user-joined", user: name, message: `${name} has left!!` },
+      ]);
+    };
+
     socket.on("user-joined", handleUserJoined);
     socket.on("receive", handleMessageReceive);
+    socket.on("user-left", handleUserLeft);
 
     // Cleanup function to remove the event listeners
     return () => {
       socket.off("user-joined", handleUserJoined);
       socket.off("receive", handleMessageReceive);
+      disconnect();
     };
   }, []);
 
@@ -63,6 +75,7 @@ const ChatPage = () => {
     ]);
     sendMessage(inputValue);
     setInputValue(""); // Clear the input field after sending
+    audioRef.current.play();
   };
 
   const handleFormSubmit = (event) => {
@@ -122,7 +135,7 @@ const ChatPage = () => {
           >
             {data.type === "user-joined"
               ? data.message
-              : `${data.user} = ${data.message}`}
+              : `${data.user} ~ ${data.message}`}
           </div>
         ))}
       </div>
@@ -139,6 +152,8 @@ const ChatPage = () => {
       <div className={styles["btn"]}>
         <button onClick={handleSendClick}>Send</button>
       </div>
+
+      <audio ref={audioRef} src={ting} />
     </>
   );
 };

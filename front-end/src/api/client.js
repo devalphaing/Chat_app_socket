@@ -11,3 +11,7 @@ export const userJoined = (name)=> {
 export const sendMessage = (message) => {
     socket.emit('send', message);   
 }
+
+export const disconnect = () => {
+    socket.emit('disconnect');
+}

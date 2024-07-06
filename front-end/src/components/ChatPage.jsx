@@ -32,6 +32,7 @@ const ChatPage = () => {
 
     const handleMessageReceive = (data) => {
       console.log(data, "receive");
+      audioRef.current.play();
       setMessages((prevMessages) => [
         ...prevMessages,
         { type: "message", user: data.name, message: data.message },
@@ -75,7 +76,6 @@ const ChatPage = () => {
     ]);
     sendMessage(inputValue);
     setInputValue(""); // Clear the input field after sending
-    audioRef.current.play();
   };
 
   const handleFormSubmit = (event) => {

@@ -14,36 +14,49 @@ import DialogTitle from "@mui/material/DialogTitle";
 const ChatPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [userName, setUserName] = useState("");
-  const [messages, setMessages] = useState([
-    { type: "message", user: "bot", message: "Hello from abc!!" },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [askName, setAskName] = useState(true);
   const nameInputRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
   useEffect(() => {
-    socket.on("user-joined", (name) => {
+    const handleUserJoined = (name) => {
       console.log("new member joined", name);
       setMessages((prevMessages) => [
         ...prevMessages,
         { type: "user-joined", user: name, message: `${name} has joined!!` },
       ]);
-    });
+    };
 
-    socket.on("receive", (data) => {
-      console.log(data, "recieve");
+    const handleMessageReceive = (data) => {
+      console.log(data, "receive");
       setMessages((prevMessages) => [
         ...prevMessages,
         { type: "message", user: data.name, message: data.message },
       ]);
-    });
+    };
+
+    socket.on("user-joined", handleUserJoined);
+    socket.on("receive", handleMessageReceive);
+
+    // Cleanup function to remove the event listeners
+    return () => {
+      socket.off("user-joined", handleUserJoined);
+      socket.off("receive", handleMessageReceive);
+    };
   }, []);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
 
   const handleSendClick = () => {
-    // console.log(`${userName}: ${inputValue}`);
     setMessages((prevMessages) => [
       ...prevMessages,
       { type: "message", user: userName, message: inputValue },
@@ -95,7 +108,7 @@ const ChatPage = () => {
 
       <div className={styles["nav-bar"]}>Chat-App</div>
 
-      <div className={styles["chat-container"]}>
+      <div className={styles["chat-container"]} ref={chatContainerRef}>
         {messages.map((data, index) => (
           <div
             key={index}
@@ -107,7 +120,9 @@ const ChatPage = () => {
                 : styles["other-msg"]
             }
           >
-            {data.user} = {data.message}
+            {data.type === "user-joined"
+              ? data.message
+              : `${data.user} = ${data.message}`}
           </div>
         ))}
       </div>

@@ -1,0 +1,71 @@
+.login-card-container{
+    height: calc(100vh - 1rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-card{
+    height: 50%;
+    width: 50%;
+    background-color: white;
+    box-shadow: 0rem 0rem 2rem 0.2rem black;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(rgb(255, 255, 255), rgb(109, 39, 239));
+    color: rgb(49, 35, 35);
+}
+
+.login-card-input{
+    border: 3px solid black;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.login-card-input-key{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.login-card-input-value{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.login-card-input-value input{
+    border-radius: 1rem;
+    border: none;
+    width: 15rem;
+}
+
+.login-card-btn-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    padding-top: 1rem;
+}
+
+.login-card-btn-container button {
+    background-image: linear-gradient(rgb(255, 255, 255), rgb(109, 39, 239));
+    padding: 0.5rem 2rem;
+    border-radius: 1rem;
+    border: none;
+}
+
+.login-card-btn-container button:hover {
+    cursor: pointer;
+}

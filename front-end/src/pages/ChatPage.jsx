@@ -3,28 +3,19 @@ import styles from "./ChatPage.module.css";
 import { disconnect, sendMessage, socket, userJoined } from "../api/client";
 import ting from '../media/ting.mp3';
 
-//mui
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-
-const ChatPage = () => {
+const ChatPage = ({userName}) => {
   // State variables to manage input, username, messages, and the username dialog
   const [inputValue, setInputValue] = useState("");
-  const [userName, setUserName] = useState("");
   const [messages, setMessages] = useState([]);
-  const [askName, setAskName] = useState(true);
 
   // Refs to manage focus and DOM elements
-  const nameInputRef = useRef(null);
   const chatContainerRef = useRef(null);
   const audioRef = useRef(null);
 
   useEffect(() => {
+
+    userJoined(userName);
+
     // Function to handle when a user joins the chat
     const handleUserJoined = (name) => {
       console.log("new member joined", name);
@@ -90,20 +81,19 @@ const ChatPage = () => {
   };
 
   // Handle form submission to set the username
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    const enteredName = nameInputRef.current.value.trim();
-    if (enteredName) {
-      setUserName(enteredName);
-      userJoined(enteredName); // Notify the server that a user has joined
-      setAskName(false); // Close the dialog
-    }
-  };
+  // const handleFormSubmit = (event) => {
+  //   event.preventDefault();
+  //   const enteredName = nameInputRef.current.value.trim();
+  //   if (enteredName) {
+  //     userJoined(enteredName); // Notify the server that a user has joined
+  //     setAskName(false); // Close the dialog
+  //   }
+  // };
 
   return (
     <>
       {/* Dialog to ask for the user's name */}
-      <Dialog
+      {/* <Dialog
         open={askName}
         onClose={() => {}}
         PaperProps={{
@@ -130,7 +120,7 @@ const ChatPage = () => {
         <DialogActions>
           <Button type="submit">Submit</Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
 
       {/* Main chat UI */}
       <div className={styles["nav-bar"]}>Chat-App</div>
